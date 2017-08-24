@@ -18,13 +18,13 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 /**
  * <p>
- * 代码生成器 
+ * 代码生成器  针对控制器设置 
  * </p>
  *
  * @author kangming.ning
  * @date 2017-08-23
  */
-public class MysqlGenerator {
+public class MysqlGeneratorController {
 
 	public static void main(String[] args) {
 		// 自定义需要填充的字段
@@ -79,8 +79,8 @@ public class MysqlGenerator {
 		// strategy.setDbColumnUnderline(true);//全局下划线命名
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略 下划线转驼峰命名
-		strategy.setInclude(new String[] { "t_weather","t_driving_record" }) ;// 需要生成的表
-		//strategy.setExclude(new String[]{"t_user"}); // 排除生成的表
+		//strategy.setInclude(new String[] { "t_user" }) ;// 需要生成的表
+		 strategy.setExclude(new String[]{"t_user"}); // 排除生成的表
 
 		// 自定义实体父类
 		//  .setSuperEntityClass("com.wholesmart.common.util.mybatis.BaseEntity")
@@ -112,7 +112,7 @@ public class MysqlGenerator {
 		//-------------- 包配置--------------------
 		PackageConfig pc = new PackageConfig();
 		pc.setParent("com");
-		pc.setModuleName("wholesmart");//按实际模块 分批生成 不要一下子把所有数据表生成了
+		pc.setModuleName("base");//按实际模块 分批生成 不要一下子把所有数据表生成了
 		mpg.setPackageInfo(pc);
 
 		// 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
@@ -139,11 +139,11 @@ public class MysqlGenerator {
 		// 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也可以自定义模板名称
 		 TemplateConfig tc = new TemplateConfig();
 		 tc.setController(ConstVal.TEMPLATE_CONTROLLER);
-		 tc.setEntity(ConstVal.TEMPLATE_ENTITY);
-		 tc.setMapper(ConstVal.TEMPLATE_MAPPER);
-		 tc.setXml(ConstVal.TEMPLATE_XML);
-		 tc.setService(ConstVal.TEMPLATE_SERVICE);
-		 tc.setServiceImpl(ConstVal.TEMPLATE_SERVICEIMPL);
+		 tc.setEntity(null);
+		 tc.setMapper(null);
+		 tc.setXml(null);
+		 tc.setService(null);
+		 tc.setServiceImpl(null);
 		 mpg.setTemplate(tc);
 		// 执行生成
 		mpg.execute();

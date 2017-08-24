@@ -1,8 +1,13 @@
-package ${package.Controller};
+package com.wholesmart.controller.${package.ModuleName};
 
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 #if(${restControllerStyle})
 import org.springframework.web.bind.annotation.RestController;
 #else
@@ -11,6 +16,16 @@ import org.springframework.stereotype.Controller;
 #if(${superControllerClassPackage})
 import ${superControllerClassPackage};
 #end
+
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
+import com.wholesmart.common.web.JSONMessage;
+import com.wholesmart.entity.${entity};
+import com.wholesmart.service.${table.serviceName};
+import com.wordnik.swagger.annotations.ApiOperation;
+
+
+
 
 /**
  * <p>
@@ -25,7 +40,7 @@ import ${superControllerClassPackage};
 #else
 @Controller
 #end
-@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+@RequestMapping("#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
 #if(${superControllerClass})
 public class ${table.controllerName} extends ${superControllerClass} {
 #else
@@ -34,13 +49,56 @@ public class ${table.controllerName} {
 
    @Autowired
    private ${table.serviceName} serviceI;
-   
+    
+   @ApiOperation(value="得到数据列表",httpMethod="GET",notes="得到数据列表")
    @RequestMapping("/list")
-    public ModelAndView index(ModelAndView modelAndView) {
+   public ModelAndView list(ModelAndView modelAndView) {
+        List<${entity}> list = serviceI.selectList(null);
         modelAndView.setViewName("${package.ModuleName}/${table.entityPath}");
-        modelAndView.addObject("${table.entityPath}List", serviceI.selectList(null));
+        JSONMessage message = JSONMessage.success("success", list);
+        modelAndView.addObject("pageData", message);
         return modelAndView;
     }
+    
+    @ApiOperation(value="进入保存页面，如果传id则进入更新页面并返回一条实体数据",httpMethod="GET",notes="进入保存页面，如果传id则进入更新页面并返回一条实体数据")
+    @RequestMapping("/preSave")
+    public ModelAndView preSave(ModelAndView modelAndView, @RequestParam(value = "id", required = false) Long id) {
+        modelAndView.setViewName("${package.ModuleName}/${table.entityPath}");
+        if (id != null) {
+        	${entity} ${table.entityPath} = serviceI.selectById(id);
+        	JSONMessage message = JSONMessage.success("success", ${table.entityPath});
+            modelAndView.addObject("pageData", message);
+        }
+        return modelAndView;
+    }
+    
+    @ApiOperation(value="保存或更新数据，对象带ID则认为更新数据",httpMethod="POST",notes="保存或更新数据")
+    @ResponseBody
+    @RequestMapping("save")
+    public JSONMessage save(${entity} ${table.entityPath}) {
+        if (null==${table.entityPath}.getId()) {
+        	boolean success = serviceI.insert(${table.entityPath});
+            return JSONMessage.success("save success", success);
+        } else {
+        	boolean success = serviceI.updateById(${table.entityPath});
+            return JSONMessage.success("update success", success);
+        }
+    } 
 
-	
+    @ApiOperation(value="删除一条数据",httpMethod="GET",notes="删除一条数据")
+    @ResponseBody
+    @RequestMapping("/delete")
+    public JSONMessage delete(@RequestParam(value = "id", required = false) Long id) {
+    	boolean b = serviceI.deleteById(id);
+        return JSONMessage.success("delete success",b);
+    }
+    
+    @ApiOperation(value="得到分页数据列表,需要分页参数current和limit",httpMethod="GET",notes="得到分页数据列表,需要分页参数current和limit")
+    @RequestMapping("/listPage")
+     public JSONMessage listPage(Pagination pageInfo) {
+    	 Page<${entity}> page = serviceI.selectPage(new Page<>(pageInfo.getCurrent(), pageInfo.getLimit()));
+         JSONMessage message = JSONMessage.success("success", page);
+         return message;
+     }
+    
 }
