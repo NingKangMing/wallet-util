@@ -79,8 +79,8 @@ public class MysqlGeneratorController {
 		// strategy.setDbColumnUnderline(true);//全局下划线命名
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略 下划线转驼峰命名
-		//strategy.setInclude(new String[] { "t_user" }) ;// 需要生成的表
-		 strategy.setExclude(new String[]{"t_user"}); // 排除生成的表
+		strategy.setInclude(new String[] {"t_login_log" }) ;// 需要生成的表
+		// strategy.setExclude(new String[]{"t_user","t_user_role","t_role","t_resource","t_role_resources"}); // 排除生成的表
 
 		// 自定义实体父类
 		//  .setSuperEntityClass("com.wholesmart.common.util.mybatis.BaseEntity")
@@ -111,7 +111,7 @@ public class MysqlGeneratorController {
 
 		//-------------- 包配置--------------------
 		PackageConfig pc = new PackageConfig();
-		pc.setParent("com");
+		pc.setParent("com.wholesmart");
 		pc.setModuleName("base");//按实际模块 分批生成 不要一下子把所有数据表生成了
 		mpg.setPackageInfo(pc);
 

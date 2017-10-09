@@ -1,8 +1,11 @@
 package com.wallet.km.util.mybatis;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.enums.FieldFill;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.ConstVal;
@@ -12,6 +15,7 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
@@ -28,9 +32,13 @@ public class MysqlGenerator {
 
 	public static void main(String[] args) {
 		// 自定义需要填充的字段
-		//List<TableFill> tableFillList = new ArrayList<>();//字段填充
-		//tableFillList.add(new TableFill("ASDD_SS", FieldFill.INSERT_UPDATE));//插入和更新填充字段
-
+		List<TableFill> tableFillList = new ArrayList<>();//字段填充
+		tableFillList.add(new TableFill("create_user", FieldFill.INSERT));//插入和更新填充字段
+		tableFillList.add(new TableFill("input_user", FieldFill.INSERT));
+		tableFillList.add(new TableFill("update_user", FieldFill.UPDATE));
+		tableFillList.add(new TableFill("create_time", FieldFill.INSERT));
+		tableFillList.add(new TableFill("input_time", FieldFill.INSERT));
+		tableFillList.add(new TableFill("update_time", FieldFill.UPDATE));
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();
 		// 全局配置
@@ -79,14 +87,14 @@ public class MysqlGenerator {
 		// strategy.setDbColumnUnderline(true);//全局下划线命名
 		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略 下划线转驼峰命名
-		strategy.setInclude(new String[] { "t_weather","t_driving_record" }) ;// 需要生成的表
-		//strategy.setExclude(new String[]{"t_user"}); // 排除生成的表
+		strategy.setInclude(new String[] {"t_level","t_waring_issue" }) ;// 需要生成的表
+		//strategy.setExclude(new String[]{"t_user","t_user_role","t_role","t_resource","t_role_resources"}); // 排除生成的表
 
 		// 自定义实体父类
 		//  .setSuperEntityClass("com.wholesmart.common.util.mybatis.BaseEntity")
 		// 自定义实体，公共字段
 		//.setSuperEntityColumns(new String[]{"id"})//自定义基础的Entity类，公共字段
-		//.setTableFillList(tableFillList)
+		strategy.setTableFillList(tableFillList);
 		// 自定义 mapper 父类
 		// .setSuperMapperClass("com.baomidou.demo.TestMapper")
 		// 自定义 service 父类
@@ -138,7 +146,7 @@ public class MysqlGenerator {
 		// 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/template 下面内容修改，
 		// 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也可以自定义模板名称
 		 TemplateConfig tc = new TemplateConfig();
-		 tc.setController(ConstVal.TEMPLATE_CONTROLLER);
+		 tc.setController(null/*ConstVal.TEMPLATE_CONTROLLER*/);
 		 tc.setEntity(ConstVal.TEMPLATE_ENTITY);
 		 tc.setMapper(ConstVal.TEMPLATE_MAPPER);
 		 tc.setXml(ConstVal.TEMPLATE_XML);

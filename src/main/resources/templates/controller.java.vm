@@ -1,4 +1,4 @@
-package com.wholesmart.controller.${package.ModuleName};
+package com.wholesmart.community.controller.${package.ModuleName};
 
 
 import java.util.List;
@@ -18,11 +18,11 @@ import ${superControllerClassPackage};
 #end
 
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.wholesmart.common.web.JSONMessage;
-import com.wholesmart.entity.${entity};
-import com.wholesmart.service.${table.serviceName};
-import com.wordnik.swagger.annotations.ApiOperation;
+import com.wholesmart.common.web.PageInfo;
+import com.wholesmart.community.entity.${entity};
+import com.wholesmart.community.service.${table.serviceName};
+import io.swagger.annotations.ApiOperation;
 
 
 
@@ -32,7 +32,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * $!{table.comment} 前端控制器
  * </p>
  *
- * @author ${author}
+ * @author 
  * @since ${date}
  */
 #if(${restControllerStyle})
@@ -50,15 +50,6 @@ public class ${table.controllerName} {
    @Autowired
    private ${table.serviceName} serviceI;
     
-   @ApiOperation(value="得到数据列表",httpMethod="GET",notes="得到数据列表")
-   @RequestMapping("/list")
-   public ModelAndView list(ModelAndView modelAndView) {
-        List<${entity}> list = serviceI.selectList(null);
-        modelAndView.setViewName("${package.ModuleName}/${table.entityPath}");
-        JSONMessage message = JSONMessage.success("success", list);
-        modelAndView.addObject("pageData", message);
-        return modelAndView;
-    }
     
     @ApiOperation(value="进入保存页面，如果传id则进入更新页面并返回一条实体数据",httpMethod="GET",notes="进入保存页面，如果传id则进入更新页面并返回一条实体数据")
     @RequestMapping("/preSave")
@@ -94,8 +85,9 @@ public class ${table.controllerName} {
     }
     
     @ApiOperation(value="得到分页数据列表,需要分页参数current和limit",httpMethod="GET",notes="得到分页数据列表,需要分页参数current和limit")
+    @ResponseBody
     @RequestMapping("/listPage")
-     public JSONMessage listPage(Pagination pageInfo) {
+     public JSONMessage listPage(PageInfo pageInfo) {
     	 Page<${entity}> page = serviceI.selectPage(new Page<>(pageInfo.getCurrent(), pageInfo.getLimit()));
          JSONMessage message = JSONMessage.success("success", page);
          return message;
