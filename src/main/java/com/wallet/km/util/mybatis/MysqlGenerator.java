@@ -33,12 +33,8 @@ public class MysqlGenerator {
 	public static void main(String[] args) {
 		// 自定义需要填充的字段
 		List<TableFill> tableFillList = new ArrayList<>();//字段填充
-		tableFillList.add(new TableFill("create_user", FieldFill.INSERT));//插入和更新填充字段
-		tableFillList.add(new TableFill("input_user", FieldFill.INSERT));
-		tableFillList.add(new TableFill("update_user", FieldFill.UPDATE));
-		tableFillList.add(new TableFill("create_time", FieldFill.INSERT));
-		tableFillList.add(new TableFill("input_time", FieldFill.INSERT));
-		tableFillList.add(new TableFill("update_time", FieldFill.UPDATE));
+		tableFillList.add(new TableFill("gmt_create", FieldFill.INSERT));//插入和更新填充字段
+		tableFillList.add(new TableFill("gmt_modified", FieldFill.UPDATE));
 		// 代码生成器
 		AutoGenerator mpg = new AutoGenerator();
 		// 全局配置
@@ -77,7 +73,7 @@ public class MysqlGenerator {
 		dsc.setDriverName("com.mysql.jdbc.Driver");
 		dsc.setUsername("root");
 		dsc.setPassword("root");
-		dsc.setUrl("jdbc:mysql://127.0.0.1:3306/lichuanweb?characterEncoding=utf8");
+		dsc.setUrl("jdbc:mysql://127.0.0.1:3306/healthyevaluate?characterEncoding=utf8");
 		mpg.setDataSource(dsc);
 
 
@@ -85,10 +81,10 @@ public class MysqlGenerator {
 		StrategyConfig strategy = new StrategyConfig();
 		// strategy.setCapitalMode(true);// 全局大写命名
 		// strategy.setDbColumnUnderline(true);//全局下划线命名
-		strategy.setTablePrefix(new String[] { "t_" });// 此处可以修改为您的表前缀
+		strategy.setTablePrefix(new String[] { "b_","sys_" });// 此处可以修改为您的表前缀
 		strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略 下划线转驼峰命名
-		strategy.setInclude(new String[] {"t_level","t_waring_issue" }) ;// 需要生成的表
-		//strategy.setExclude(new String[]{"t_user","t_user_role","t_role","t_resource","t_role_resources"}); // 排除生成的表
+		strategy.setInclude(new String[] {"b_upload"}) ;// 需要生成的表
+		// strategy.setExclude(new String[]{"t_user","t_user_role","t_role","t_resource","t_role_resources"}); // 排除生成的表
 
 		// 自定义实体父类
 		//  .setSuperEntityClass("com.wholesmart.common.util.mybatis.BaseEntity")
@@ -112,7 +108,7 @@ public class MysqlGenerator {
 		// 【实体】是否为lombok模型（默认 false）<a href="https://projectlombok.org/">document</a>
 		// .setEntityLombokModel(true)
 		// Boolean类型字段是否移除is前缀处理
-		//strategy .setEntityBooleanColumnRemoveIsPrefix(true);
+		 strategy .setEntityBooleanColumnRemoveIsPrefix(true);
 		 strategy.setRestControllerStyle(true);//Controller restful风格
 		// .setControllerMappingHyphenStyle(true)
 		mpg.setStrategy(strategy);
@@ -120,7 +116,10 @@ public class MysqlGenerator {
 		//-------------- 包配置--------------------
 		PackageConfig pc = new PackageConfig();
 		pc.setParent("com");
-		pc.setModuleName("wholesmart");//按实际模块 分批生成 不要一下子把所有数据表生成了
+		pc.setModuleName("xutown");
+		//pc.setController("controller");
+		//pc.setEntity("model");
+		//pc.setMapper("dao");
 		mpg.setPackageInfo(pc);
 
 		// 注入自定义配置，可以在 VM 中使用 cfg.abc 设置的值
@@ -146,8 +145,8 @@ public class MysqlGenerator {
 		// 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/template 下面内容修改，
 		// 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也可以自定义模板名称
 		 TemplateConfig tc = new TemplateConfig();
-		 tc.setController(null/*ConstVal.TEMPLATE_CONTROLLER*/);
-		 tc.setEntity(ConstVal.TEMPLATE_ENTITY);
+		 tc.setController(ConstVal.TEMPLATE_CONTROLLER);
+		 tc.setEntity(ConstVal.TEMPLATE_ENTITY_JAVA);
 		 tc.setMapper(ConstVal.TEMPLATE_MAPPER);
 		 tc.setXml(ConstVal.TEMPLATE_XML);
 		 tc.setService(ConstVal.TEMPLATE_SERVICE);
