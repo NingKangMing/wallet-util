@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 
+ * @author NingKangMing
+ * */
 public class PhoneticSortTest {
 
 	/**
@@ -16,14 +20,14 @@ public class PhoneticSortTest {
 	 * 然后使用Java原生排序算法 
 	 * 再将包含&字符的字符串中的&和首字母去除从而达到排序目的 
 	 * */
-	public static void main(String[] args) { 
+	public static void main(final String[] args) { 
 		
 		//对字符数组的拼音排序
 		// String[] arrays = new String[] { "gyu", "sdf", "zf", "大同", "收到", "地方", "三等分", "的人", "反对高铁", "泛代数", "上的投入", "和国家" };
 		//PhoneticUtil.sortByPhonetic(arrays);
 		
 		//对对象的拼音排序【只根据首字符来排序】
-		List<UserSort> list=new ArrayList<>();
+		final List<UserSort> list=new ArrayList<>();
 		list.add(new UserSort("2","大同"));
 		list.add(new UserSort("7","曾经"));
 		list.add(new UserSort("7","ef"));

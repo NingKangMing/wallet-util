@@ -11,6 +11,7 @@ public class ThreadPoolExecutorTest {
 		ThreadPoolExecutor executor =(ThreadPoolExecutor)Executors.newFixedThreadPool(2);
 		Future<String> future = executor.submit(new TaskStr());
 		Future<Integer> fu2 = executor.submit(new TaskInteger());
+		Future<Boolean> fu3 = executor.submit(new TaskBoolean());
 		try {
 			String str = future.get();
 			System.out.println(str);
@@ -27,7 +28,7 @@ public class ThreadPoolExecutorTest {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-		Future<Boolean> fu3 = executor.submit(new TaskBoolean());
+		
 		try {
 			Boolean b = fu3.get();
 			System.out.println(b);
